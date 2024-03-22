@@ -1,8 +1,8 @@
-### Personalized NVIM setup
-# Originally based on kickstart
+# Personalized NVIM setup
+### Originally based on kickstart
 
 
-### RASPBERRY PI INSTALL REQUIRES BUILDING BIN ###
+## RASPBERRY PI INSTALL REQUIRES BUILDING BIN ###
 git clone https://github.com/neovim/neovim
 
 cd neovim
