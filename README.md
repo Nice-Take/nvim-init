@@ -9,6 +9,6 @@ cd neovim
 
 make CMAKE_EXTRA_FLAGS="-DCMAKE_INSTALL_PREFIX=$HOME/neovim"
 
-get checkout stable
+git checkout stable
 
 sudo make install
