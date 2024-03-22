@@ -14,3 +14,12 @@ git checkout stable
 sudo make install
 
 sudo mv ./bin/nvim /bin
+
+## Add to PATH
+
+nano ~/.bashrc
+
+export PATH="$HOME/neovim/bin:$PATH"
+
+source ~/.bashrc
+
