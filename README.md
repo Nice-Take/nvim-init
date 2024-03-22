@@ -2,7 +2,7 @@
 # Originally based on kickstart
 
 
-### RASPBERRY PI INSTALL REQUIRED BUILDING BIN ###
+### RASPBERRY PI INSTALL REQUIRES BUILDING BIN ###
 git clone https://github.com/neovim/neovim
 
 cd neovim
