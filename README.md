@@ -12,3 +12,5 @@ make CMAKE_EXTRA_FLAGS="-DCMAKE_INSTALL_PREFIX=$HOME/neovim"
 git checkout stable
 
 sudo make install
+
+sudo mv ./bin/nvim /bin
