@@ -2,6 +2,11 @@
 ### Originally based on kickstart
 
 
+## Mac Install ###
+mkdir -p ~/.config/nvim
+nvim_config=~/config/nvim/inti.lua
+
+
 ## RASPBERRY PI INSTALL REQUIRES BUILDING BIN ###
 git clone https://github.com/neovim/neovim
 
