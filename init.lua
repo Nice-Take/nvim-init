@@ -441,32 +441,35 @@ local on_attach = function(_, bufnr)
 end
 
 -- document existing key chains
-require('which-key').register({
-  ['<leader>c'] = { name = '[C]ode', _ = 'which_key_ignore' },
-  ['<leader>d'] = { name = '[D]ocument', _ = 'which_key_ignore' },
-  ['<leader>g'] = { name = '[G]it', _ = 'which_key_ignore' },
-  ['<leader>h'] = { name = 'More git', _ = 'which_key_ignore' },
-  ['<leader>r'] = { name = '[R]ename', _ = 'which_key_ignore' },
-  ['<leader>s'] = { name = '[S]earch', _ = 'which_key_ignore' },
-  ['<leader>w'] = { name = '[W]orkspace', _ = 'which_key_ignore' },
+local wk = require('which-key')
+
+wk.add({
+  { '<leader>c',  group = '[C]ode' },
+  { '<leader>c_', hidden = true },
+
+  { '<leader>d',  group = '[D]ocument' },
+  { '<leader>d_', hidden = true },
+
+  { '<leader>g',  group = '[G]it' },
+  { '<leader>g_', hidden = true },
+
+  { '<leader>h',  group = 'More git' },
+  { '<leader>h_', hidden = true },
+
+  { '<leader>r',  group = '[R]ename' },
+  { '<leader>r_', hidden = true },
+
+  { '<leader>s',  group = '[S]earch' },
+  { '<leader>s_', hidden = true },
+
+  { '<leader>w',  group = '[W]orkspace' },
+  { '<leader>w_', hidden = true },
 })
 
--- Enable the following language servers
---  Feel free to add/remove any LSPs that you want here. They will automatically be installed.
---
---  Add any additional override configuration in the following tables. They will be passed to
---  the `settings` field of the server config. You must look up that documentation yourself.
---
---  If you want to override the default filetypes that your language server will attach to you can
---  define the property 'filetypes' to the map in question.
-local servers = {
-  -- clangd = {},
-  -- gopls = {},
-  -- pyright = {},
-  -- rust_analyzer = {},
-  -- tsserver = {},
-  -- html = { filetypes = { 'html', 'twig', 'hbs'} },
 
+-- Enable the following language servers
+--  Add more entries (pyright, tsserver, etc.) as needed.
+local servers = {
   lua_ls = {
     Lua = {
       workspace = { checkThirdParty = false },
@@ -482,23 +485,27 @@ require('neodev').setup()
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 
--- Ensure the servers above are installed
-local mason_lspconfig = require 'mason-lspconfig'
+-- Configure each server via the new vim.lsp.config() API (Neovim ≥0.11)
+for server_name, server_settings in pairs(servers) do
+  vim.lsp.config(server_name, {
+    capabilities = capabilities,
+    on_attach = on_attach,
+    settings = server_settings,
+    filetypes = server_settings.filetypes,
+  })
+end
 
-mason_lspconfig.setup {
+-- Setup mason and mason-lspconfig (v2 style)
+require('mason').setup()
+
+require('mason-lspconfig').setup {
+  -- Mason will install these servers
   ensure_installed = vim.tbl_keys(servers),
+
+  -- Automatically enable installed servers using the configs above
+  automatic_enable = true,
 }
 
-mason_lspconfig.setup_handlers {
-  function(server_name)
-    require('lspconfig')[server_name].setup {
-      capabilities = capabilities,
-      on_attach = on_attach,
-      settings = servers[server_name],
-      filetypes = (servers[server_name] or {}).filetypes,
-    }
-  end
-}
 
 -- [[ Configure nvim-cmp ]]
 -- See `:help cmp`
